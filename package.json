@@ -1,0 +1,10 @@
+{
+  "name": "airia-corporate-tower",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  }
+}

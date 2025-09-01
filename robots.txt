@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://emaar-india-business-centre.vercel.app/sitemap.xml
+
+# Block unnecessary crawling
+Disallow: /api/
+Disallow: /*.php$
