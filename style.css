@@ -851,7 +851,7 @@ a { color: inherit; text-decoration: none; }
 .location-section {
   background: 
     linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.6) 100%), 
-    url('images/location-bg.webp') center/cover no-repeat;
+    url('images/location-img.webp') center/cover no-repeat;
   position: relative;
 }
 
@@ -1013,13 +1013,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Bubble sizes increase with time - Made larger for better visibility */
-.bubble-item[data-time="12"] .bubble { width: 90px; height: 90px; }
-.bubble-item[data-time="21"] .bubble { width: 100px; height: 100px; }
-.bubble-item[data-time="26"] .bubble { width: 110px; height: 110px; }
+.bubble-item[data-time="15"] .bubble { width: 90px; height: 90px; }
+.bubble-item[data-time="30"] .bubble { width: 100px; height: 100px; }
+.bubble-item[data-time="30"] .bubble { width: 110px; height: 110px; }
 .bubble-item[data-time="30"] .bubble { width: 120px; height: 120px; }
-.bubble-item[data-time="55"] .bubble { width: 130px; height: 130px; }
+.bubble-item[data-time="95"] .bubble { width: 130px; height: 130px; }
 
-/* Mobile Responsive Bubbles */
+/* Mobile Responsive Bubbles */   
 @media (max-width: 768px) {
   .location-section {
     padding-bottom: 100px;
@@ -1227,6 +1227,71 @@ a { color: inherit; text-decoration: none; }
   background: transparent; color: var(--gold); border: 1px solid var(--gold);
 }
 .btn-outline:hover { background: var(--gold); color: #fff; }
+
+/* Section CTA Button */
+.section-cta-container {
+  text-align: center;
+  margin-top: 48px;
+  padding: 32px 0;
+}
+
+.section-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 36px;
+  background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(185, 151, 91, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.section-cta-btn:hover::before {
+  left: 100%;
+}
+
+.section-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(185, 151, 91, 0.5);
+  background: linear-gradient(135deg, #d4af37 0%, var(--gold) 100%);
+}
+
+.section-cta-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.section-cta-btn:hover svg {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .section-cta-btn {
+    padding: 16px 28px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 320px;
+  }
+}
 
 /* FAQs Section */
 #faqs {
