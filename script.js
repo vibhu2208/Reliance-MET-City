@@ -140,21 +140,13 @@ function handleFormSubmission(form) {
         return;
       }
       
-      // Submit form data to Vercel Serverless Function
-      const payload = {
-        name: userName,
-        email: (formData.get('email') || '').toString().trim(),
-        mobile: userMobile,
-        project: (formData.get('project') || 'Emaar India Business Centre').toString()
-      };
-
-      const response = await fetch('/api/enquiry', {
+      // Submit form data to PHP handler
+      const response = await fetch('form.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
         },
-        body: JSON.stringify(payload)
+        body: formData
       });
       
       const result = await response.text();
@@ -175,8 +167,6 @@ function handleFormSubmission(form) {
         form.innerHTML = '';
         form.appendChild(successMessage);
         
-        // No downloads for general enquiry forms
-        
         // Unlock all floor plans and site plans (for popup form)
         if (form.id === 'enquiry-form') {
           document.querySelectorAll('.floor-plan-card, .site-plan-card').forEach(card => {
@@ -191,7 +181,7 @@ function handleFormSubmission(form) {
             closeModal();
             // Reset form without reloading page
             form.innerHTML = `
-              <input type="hidden" name="project" value="Emaar India Business Centre">
+              <input type="hidden" name="project" value="Reliance MET City Jhajjar">
               <div class="form-row">
                 <input type="text" name="name" placeholder="Full Name" required />
               </div>
@@ -213,7 +203,7 @@ function handleFormSubmission(form) {
           // For footer form, just show success and reset after delay
           setTimeout(() => {
             form.innerHTML = `
-              <input type="hidden" name="project" value="Emaar India Business Centre">
+              <input type="hidden" name="project" value="Reliance MET City Jhajjar">
               <div class="form-grid">
                 <input type="text" name="name" placeholder="Full Name" required />
                 <input type="email" name="email" placeholder="Email (Optional)" />
@@ -323,71 +313,25 @@ if (y) y.textContent = new Date().getFullYear();
   });
 })();
 
-// Download functionality
-function createZipFromImages(imageFiles, zipName) {
-  // Using JSZip library for creating ZIP files
-  // Note: This requires including JSZip library in the HTML
-  if (typeof JSZip === 'undefined') {
-    // Fallback: download images individually
-    imageFiles.forEach((file, index) => {
-      setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = file;
-        link.download = file.split('/').pop();
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }, index * 500); // Stagger downloads
-    });
-    return;
-  }
-
-  const zip = new JSZip();
-  const promises = [];
-
-  imageFiles.forEach(file => {
-    promises.push(
-      fetch(file)
-        .then(response => response.blob())
-        .then(blob => {
-          const fileName = file.split('/').pop();
-          zip.file(fileName, blob);
-        })
-    );
-  });
-
-  Promise.all(promises).then(() => {
-    zip.generateAsync({ type: 'blob' }).then(content => {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(content);
-      link.download = zipName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    });
-  });
-}
-
+// Simple download functionality (no ZIP creation)
 function downloadSingleFile(filePath, fileName) {
-  const link = document.createElement('a');
-  link.href = filePath;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const a = document.createElement('a');
+  a.href = filePath;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function triggerDownload(downloadType) {
   if (downloadType === 'floor-plans') {
-    // Create array of floor plan files (f1.webp to f14.webp)
-    const floorPlanFiles = [];
-    for (let i = 1; i <= 14; i++) {
-      floorPlanFiles.push(`images/f${i}.webp`);
-    }
-    createZipFromImages(floorPlanFiles, 'Emaar_India_Business_Centre_Floor_Plans.zip');
-  } else if (downloadType === 'master-plan') {
-    downloadSingleFile('images/master-plan.webp', 'Emaar_India_Business_Centre_Master_Plan.webp');
+    // Download individual floor plan files
+    downloadSingleFile('images/gallery01.webp', 'Reliance-MET-City-Floor-Plan-1.webp');
+    setTimeout(() => {
+      downloadSingleFile('images/gallery02.webp', 'Reliance-MET-City-Floor-Plan-2.webp');
+    }, 500);
+  } else if (downloadType === 'site-plan') {
+    downloadSingleFile('images/location-img.webp', 'Reliance-MET-City-Site-Plan.webp');
   }
 }
 
